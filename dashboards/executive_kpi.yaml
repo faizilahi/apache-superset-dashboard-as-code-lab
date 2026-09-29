@@ -1,0 +1,23 @@
+dashboard_title: Executive KPI (as-code teaching lab)
+description: YAML definition mimicking Superset dashboard metadata — import manually to real Superset optional
+datasets:
+  - name: daily_region_metrics
+    sql: |
+      SELECT metric_date, region, revenue_usd, orders
+      FROM daily_region_metrics
+charts:
+  - slice_name: Revenue by region over time
+    viz_type: line
+    query:
+      sql: |
+        SELECT metric_date, region, SUM(revenue_usd) AS revenue_usd
+        FROM daily_region_metrics
+        GROUP BY metric_date, region
+        ORDER BY metric_date
+  - slice_name: Orders by region
+    viz_type: bar
+    query:
+      sql: |
+        SELECT region, SUM(orders) AS orders
+        FROM daily_region_metrics
+        GROUP BY region
